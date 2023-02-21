@@ -7,65 +7,78 @@
 #define D8 8
 
 
-void setup()
-{
-  Serial.begin(9600);
-  pinMode(D8, INPUT);
-  pinMode(D6, OUTPUT);
-  pinMode(D7, OUTPUT);
+void setup(){
+    Serial.begin(9600);
+	  pinMode(D8, INPUT);
+    pinMode(D6, OUTPUT);
+    pinMode(D7, OUTPUT);
 }
-int ch1=0;
-
-
+bool arr[45][6]={
+  	{0, 0, 0, 1, 0, 0},
+	  {0, 0, 0, 1, 0, 1},
+	  {0, 0, 0, 1, 1, 0},
+    {0, 0, 1, 0, 0, 0},
+    {0, 0, 1, 0, 0, 1},
+    {0, 0, 1, 0, 1, 0},
+    {0, 0, 1, 1, 0, 0},
+    {0, 0, 1, 1, 0, 1},
+    {0, 0, 1, 1, 1, 0},
+    {0, 1, 0, 0, 0, 0},
+    {0, 1, 0, 0, 0, 1},
+    {0, 1, 0, 0, 1, 0},
+    {0, 1, 0, 1, 0, 0},
+    {0, 1, 0, 1, 0, 1},
+    {0, 1, 0, 1, 1, 0},
+    {0, 1, 1, 0, 0, 0},
+    {0, 1, 1, 0, 0, 1},
+    {0, 1, 1, 0, 1, 0},
+    {0, 1, 1, 1, 0, 0},
+    {0, 1, 1, 1, 0, 1},
+    {0, 1, 1, 1, 1, 0},
+    {1, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 1},
+    {1, 0, 0, 0, 1, 0},
+    {1, 0, 0, 1, 0, 0},
+    {1, 0, 0, 1, 0, 1},
+    {1, 0, 0, 1, 1, 0},
+    {1, 0, 1, 0, 0, 0},
+    {1, 0, 1, 0, 0, 1},
+    {1, 0, 1, 0, 1, 0},
+    {1, 0, 1, 1, 0, 0},
+    {1, 0, 1, 1, 0, 1},
+    {1, 0, 1, 1, 1, 0},
+    {1, 1, 0, 0, 0, 0},
+    {1, 1, 0, 0, 0, 1},
+    {1, 1, 0, 0, 1, 0},
+    {1, 1, 0, 1, 0, 0},
+    {1, 1, 0, 1, 0, 1},
+    {1, 1, 0, 1, 1, 0},
+    {1, 1, 1, 0, 0, 0},
+    {1, 1, 1, 0, 0, 1},
+    {1, 1, 1, 0, 1, 0},
+    {1, 1, 1, 1, 0, 0},
+    {1, 1, 1, 1, 0, 1},
+    {1, 1, 1, 1, 1, 0}
+};
+int ch,press=0;	
 void loop(){ 
-  int ch=0;	
-  int arrStatus[64][6];
-  for(int i=0; i<2; i++){
-  	for(int i1=0;i1<2;i1++){
-      for(int i2=0;i2<2;i2++){
-        for(int i3=0;i3<2;i3++){
-          for(int i4=0;i4<2;i4++){
-            for(int i5=0;i5<2;i5++){
-              arrStatus[ch][0]=i;
-              arrStatus[ch][1]=i1;
-              arrStatus[ch][2]=i2;
-              arrStatus[ch][3]=i3;
-              arrStatus[ch][4]=i4;
-              arrStatus[ch][5]=i5;
-              ch++;				
-  		  	}
-  		  }
-  		}
-      }
-    }
-  }
-  int sensorVal = digitalRead(D8);
-  if(sensorVal==HIGH){
-    while(true){
-      if(arrStatus[ch1][0]==0 and arrStatus[ch1][1]==0 and arrStatus[ch1][2]==0 and arrStatus[ch1][3]==0 and arrStatus[ch1][4]==0 and arrStatus[ch1][5]==0){
-        ch1++;
-      }
-      else if(arrStatus[ch1][4]==0 and arrStatus[ch1][5]==0){
-        ch1++;
-      }
-      else if(arrStatus[ch1][0]==0 and arrStatus[ch1][1]==0 and arrStatus[ch1][2]==0 and arrStatus[ch1][3]==0){
-        ch1++;
-      }
-      else{
-        Serial.println(arrStatus[ch1][0]);
-        digitalWrite(D2, arrStatus[ch1][0]);
-  	    digitalWrite(D3, arrStatus[ch1][1]);
-  	    digitalWrite(D4, arrStatus[ch1][2]);
-  	    digitalWrite(D5, arrStatus[ch1][3]);
-        digitalWrite(D6, arrStatus[ch1][4]);
-  	    digitalWrite(D7, arrStatus[ch1][5]);
-        ch1++;
-        if(ch1==64){
-          ch1=0;
-        }
+    if(digitalRead(D8)==HIGH){
         delay(250);
-          break;
+    	  if(press==0){
+        	  digitalWrite(D2, arr[ch][0]);
+            digitalWrite(D3, arr[ch][1]);
+            digitalWrite(D4, arr[ch][2]);
+            digitalWrite(D5, arr[ch][3]);
+            digitalWrite(D6, arr[ch][4]);
+            digitalWrite(D7, arr[ch][5]);
+            ch++;
+            if(ch==45){
+            	  ch=0;
+            }
+            press=1;
         }
-      }
+    }
+    else{
+        press=0;
     }
 }
